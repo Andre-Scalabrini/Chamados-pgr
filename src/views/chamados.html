@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chamados - Sistema de Chamados T.I</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">🖥️</div>
+                <h2>Chamados T.I</h2>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="/admin/dashboard" class="nav-item">
+                    <span class="icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/admin/chamados" class="nav-item active">
+                    <span class="icon">📋</span>
+                    <span>Chamados</span>
+                </a>
+                <a href="/admin/usuarios" class="nav-item" id="menuUsuarios">
+                    <span class="icon">👥</span>
+                    <span>Usuários</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <span class="user-name" id="userName">Carregando...</span>
+                    <span class="user-role" id="userRole"></span>
+                </div>
+                <a href="/admin/logout" class="logout-btn">
+                    <span class="icon">🚪</span>
+                    <span>Sair</span>
+                </a>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="page-header">
+                <h1>Chamados</h1>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" onclick="exportarChamados()">
+                        📥 Exportar
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Filtros -->
+            <div class="filters-container">
+                <div class="filter-group">
+                    <label>Status</label>
+                    <select id="filtroStatus">
+                        <option value="">Todos</option>
+                        <option value="aberto">Aberto</option>
+                        <option value="em_andamento">Em Andamento</option>
+                        <option value="resolvido">Resolvido</option>
+                        <option value="fechado">Fechado</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Urgência</label>
+                    <select id="filtroUrgencia">
+                        <option value="">Todas</option>
+                        <option value="critica">Crítica</option>
+                        <option value="alta">Alta</option>
+                        <option value="media">Média</option>
+                        <option value="baixa">Baixa</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Categoria</label>
+                    <select id="filtroCategoria">
+                        <option value="">Todas</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Técnico</label>
+                    <select id="filtroTecnico">
+                        <option value="">Todos</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Data Início</label>
+                    <input type="date" id="filtroDataInicio">
+                </div>
+                
+                <div class="filter-group">
+                    <label>Data Fim</label>
+                    <input type="date" id="filtroDataFim">
+                </div>
+                
+                <button class="btn btn-primary" onclick="aplicarFiltros()">
+                    🔍 Filtrar
+                </button>
+                
+                <button class="btn btn-secondary" onclick="limparFiltros()">
+                    🗑️ Limpar
+                </button>
+            </div>
+            
+            <!-- Tabela de Chamados -->
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Número</th>
+                            <th>Usuário</th>
+                            <th>Categoria</th>
+                            <th>Problema</th>
+                            <th>Urgência</th>
+                            <th>Status</th>
+                            <th>Técnico</th>
+                            <th>Data</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaChamados">
+                        <tr>
+                            <td colspan="9" class="text-center">Carregando...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Modal de Detalhes do Chamado -->
+    <div class="modal" id="modalChamado">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2>Detalhes do Chamado <span id="modalNumero"></span></h2>
+                <button class="modal-close" onclick="fecharModal()">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="chamado-details">
+                    <div class="detail-row">
+                        <div class="detail-group">
+                            <label>Usuário</label>
+                            <span id="detalheUsuario"></span>
+                        </div>
+                        <div class="detail-group">
+                            <label>Telefone</label>
+                            <span id="detalheTelefone"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-group">
+                            <label>Categoria</label>
+                            <span id="detalheCategoria"></span>
+                        </div>
+                        <div class="detail-group">
+                            <label>Problema</label>
+                            <span id="detalheSubcategoria"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-row" id="sistemaRow" style="display: none;">
+                        <div class="detail-group full">
+                            <label>Sistema</label>
+                            <span id="detalheSistema"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-group full">
+                            <label>Descrição</label>
+                            <p id="detalheDescricao">-</p>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-group">
+                            <label>Urgência</label>
+                            <select id="editUrgencia">
+                                <option value="critica">🔴 Crítica</option>
+                                <option value="alta">🟠 Alta</option>
+                                <option value="media">🟡 Média</option>
+                                <option value="baixa">🟢 Baixa</option>
+                            </select>
+                        </div>
+                        <div class="detail-group">
+                            <label>Status</label>
+                            <select id="editStatus">
+                                <option value="aberto">Aberto</option>
+                                <option value="em_andamento">Em Andamento</option>
+                                <option value="resolvido">Resolvido</option>
+                                <option value="fechado">Fechado</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-group">
+                            <label>Técnico Responsável</label>
+                            <select id="editTecnico">
+                                <option value="">Não atribuído</option>
+                            </select>
+                        </div>
+                        <div class="detail-group">
+                            <label>Aberto em</label>
+                            <span id="detalheCriadoEm"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Notas -->
+                <div class="notas-section">
+                    <h3>Notas e Histórico</h3>
+                    <div class="notas-list" id="notasList">
+                        <p class="text-muted">Nenhuma nota registrada.</p>
+                    </div>
+                    
+                    <div class="add-nota">
+                        <textarea id="novaNota" placeholder="Adicionar nota..."></textarea>
+                        <button class="btn btn-primary" onclick="adicionarNota()">
+                            Adicionar Nota
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="fecharModal()">Fechar</button>
+                <button class="btn btn-primary" onclick="salvarChamado()">Salvar Alterações</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/js/chamados.js"></script>
+</body>
+</html>
