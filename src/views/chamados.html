@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chamados - Sistema de Chamados T.I</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">🎫</div>
+                <h2>Chamados T.I</h2>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="/admin/dashboard" class="nav-item">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/admin/chamados" class="nav-item active">
+                    <span class="nav-icon">📋</span>
+                    <span>Chamados</span>
+                </a>
+                <a href="/admin/usuarios" class="nav-item">
+                    <span class="nav-icon">👥</span>
+                    <span>Usuários</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info" id="userInfo">
+                    <span class="user-avatar">👤</span>
+                    <span class="user-name">Carregando...</span>
+                </div>
+                <a href="/admin/logout" class="logout-btn">
+                    <span>🚪</span>
+                    <span>Sair</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="content-header">
+                <h1>Chamados</h1>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" onclick="carregarChamados()">
+                        🔄 Atualizar
+                    </button>
+                </div>
+            </header>
+
+            <!-- Filtros -->
+            <div class="filters-bar">
+                <div class="filter-group">
+                    <label for="filtroStatus">Status:</label>
+                    <select id="filtroStatus" onchange="carregarChamados()">
+                        <option value="">Todos</option>
+                        <option value="ABERTO">Aberto</option>
+                        <option value="EM_ANDAMENTO">Em Andamento</option>
+                        <option value="RESOLVIDO">Resolvido</option>
+                        <option value="FECHADO">Fechado</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="filtroUrgencia">Urgência:</label>
+                    <select id="filtroUrgencia" onchange="carregarChamados()">
+                        <option value="">Todas</option>
+                        <option value="CRITICA">Crítica</option>
+                        <option value="ALTA">Alta</option>
+                        <option value="MEDIA">Média</option>
+                        <option value="BAIXA">Baixa</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="filtroCategoria">Categoria:</label>
+                    <select id="filtroCategoria" onchange="carregarChamados()">
+                        <option value="">Todas</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Lista de Chamados -->
+            <div class="chamados-list" id="chamadosList">
+                <div class="loading-placeholder">
+                    <p>Carregando chamados...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de Detalhes do Chamado -->
+    <div class="modal" id="modalDetalhes" style="display: none;">
+        <div class="modal-overlay" onclick="fecharModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Detalhes do Chamado</h2>
+                <button class="modal-close" onclick="fecharModal()">✕</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Conteúdo carregado dinamicamente -->
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/chamados.js"></script>
+</body>
+</html>
