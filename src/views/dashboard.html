@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sistema de Chamados T.I</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">🎫</div>
+                <h2>Chamados T.I</h2>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="/admin/dashboard" class="nav-item active">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/admin/chamados" class="nav-item">
+                    <span class="nav-icon">📋</span>
+                    <span>Chamados</span>
+                </a>
+                <a href="/admin/usuarios" class="nav-item">
+                    <span class="nav-icon">👥</span>
+                    <span>Usuários</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info" id="userInfo">
+                    <span class="user-avatar">👤</span>
+                    <span class="user-name">Carregando...</span>
+                </div>
+                <a href="/admin/logout" class="logout-btn">
+                    <span>🚪</span>
+                    <span>Sair</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="content-header">
+                <h1>Dashboard</h1>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" onclick="carregarDados()">
+                        🔄 Atualizar
+                    </button>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <!-- Cards de Resumo -->
+                <div class="stats-grid">
+                    <div class="stat-card stat-total">
+                        <div class="stat-icon">📋</div>
+                        <div class="stat-info">
+                            <h3>Total de Chamados</h3>
+                            <p class="stat-value" id="totalChamados">0</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card stat-aberto">
+                        <div class="stat-icon">🆕</div>
+                        <div class="stat-info">
+                            <h3>Abertos</h3>
+                            <p class="stat-value" id="chamadosAbertos">0</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card stat-andamento">
+                        <div class="stat-icon">🔄</div>
+                        <div class="stat-info">
+                            <h3>Em Andamento</h3>
+                            <p class="stat-value" id="chamadosAndamento">0</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card stat-resolvido">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-info">
+                            <h3>Resolvidos</h3>
+                            <p class="stat-value" id="chamadosResolvidos">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cards de Urgência -->
+                <div class="section-title">
+                    <h2>Por Urgência</h2>
+                </div>
+                <div class="urgency-grid">
+                    <div class="urgency-card urgency-critica">
+                        <span class="urgency-label">🔴 Crítica</span>
+                        <span class="urgency-value" id="urgenciaCritica">0</span>
+                    </div>
+                    <div class="urgency-card urgency-alta">
+                        <span class="urgency-label">🟠 Alta</span>
+                        <span class="urgency-value" id="urgenciaAlta">0</span>
+                    </div>
+                    <div class="urgency-card urgency-media">
+                        <span class="urgency-label">🟡 Média</span>
+                        <span class="urgency-value" id="urgenciaMedia">0</span>
+                    </div>
+                    <div class="urgency-card urgency-baixa">
+                        <span class="urgency-label">🟢 Baixa</span>
+                        <span class="urgency-value" id="urgenciaBaixa">0</span>
+                    </div>
+                </div>
+
+                <!-- Tempo Médio -->
+                <div class="info-card">
+                    <div class="info-icon">⏱️</div>
+                    <div class="info-content">
+                        <h3>Tempo Médio de Resolução</h3>
+                        <p class="info-value"><span id="tempoMedio">0</span> horas</p>
+                    </div>
+                </div>
+
+                <!-- Gráficos -->
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <h3>Chamados por Data (últimos 30 dias)</h3>
+                        <canvas id="chartPorData"></canvas>
+                    </div>
+                    
+                    <div class="chart-card">
+                        <h3>Chamados por Categoria</h3>
+                        <canvas id="chartPorCategoria"></canvas>
+                    </div>
+                </div>
+
+                <!-- Tabelas -->
+                <div class="tables-grid">
+                    <div class="table-card">
+                        <h3>Problemas Mais Frequentes</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Categoria</th>
+                                    <th>Problema</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelaFrequentes">
+                                <tr>
+                                    <td colspan="3" class="loading">Carregando...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="table-card">
+                        <h3>Resolução por Técnico</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Técnico</th>
+                                    <th>Resolvidos</th>
+                                    <th>Tempo Médio</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelaTecnicos">
+                                <tr>
+                                    <td colspan="3" class="loading">Carregando...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>

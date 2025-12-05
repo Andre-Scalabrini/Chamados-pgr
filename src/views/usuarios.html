@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuários - Sistema de Chamados T.I</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">🎫</div>
+                <h2>Chamados T.I</h2>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="/admin/dashboard" class="nav-item">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/admin/chamados" class="nav-item">
+                    <span class="nav-icon">📋</span>
+                    <span>Chamados</span>
+                </a>
+                <a href="/admin/usuarios" class="nav-item active">
+                    <span class="nav-icon">👥</span>
+                    <span>Usuários</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info" id="userInfo">
+                    <span class="user-avatar">👤</span>
+                    <span class="user-name">Carregando...</span>
+                </div>
+                <a href="/admin/logout" class="logout-btn">
+                    <span>🚪</span>
+                    <span>Sair</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="content-header">
+                <h1>Usuários</h1>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="abrirModalNovoUsuario()">
+                        ➕ Novo Usuário
+                    </button>
+                </div>
+            </header>
+
+            <!-- Lista de Usuários -->
+            <div class="usuarios-list">
+                <table class="data-table full-width">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Função</th>
+                            <th>Status</th>
+                            <th>Criado em</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usuariosTable">
+                        <tr>
+                            <td colspan="6" class="loading">Carregando usuários...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de Usuário -->
+    <div class="modal" id="modalUsuario" style="display: none;">
+        <div class="modal-overlay" onclick="fecharModal()"></div>
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2 id="modalTitulo">Novo Usuário</h2>
+                <button class="modal-close" onclick="fecharModal()">✕</button>
+            </div>
+            <form id="formUsuario" class="modal-form">
+                <input type="hidden" id="usuarioId">
+                
+                <div class="form-group">
+                    <label for="nome">Nome</label>
+                    <input type="text" id="nome" name="nome" required 
+                           placeholder="Nome completo" minlength="3">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required 
+                           placeholder="email@empresa.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" name="senha" 
+                           placeholder="Mínimo 6 caracteres" minlength="6">
+                    <small class="form-hint" id="senhaHint">Obrigatório para novos usuários</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="role">Função</label>
+                    <select id="role" name="role" required>
+                        <option value="tecnico">Técnico</option>
+                        <option value="admin">Administrador</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="grupoAtivo" style="display: none;">
+                    <label>
+                        <input type="checkbox" id="ativo" name="ativo" checked>
+                        Usuário ativo
+                    </label>
+                </div>
+                
+                <div class="form-error" id="formError" style="display: none;"></div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="fecharModal()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        Salvar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação -->
+    <div class="modal" id="modalConfirmacao" style="display: none;">
+        <div class="modal-overlay" onclick="fecharModalConfirmacao()"></div>
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>Confirmar Ação</h2>
+                <button class="modal-close" onclick="fecharModalConfirmacao()">✕</button>
+            </div>
+            <div class="modal-body">
+                <p id="confirmacaoTexto">Deseja realmente realizar esta ação?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="fecharModalConfirmacao()">
+                    Cancelar
+                </button>
+                <button class="btn btn-danger" id="btnConfirmar">
+                    Confirmar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/usuarios.js"></script>
+</body>
+</html>
