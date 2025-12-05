@@ -3,8 +3,8 @@
 let usuarioAtual = null;
 
 // Carregar dados ao iniciar
-document.addEventListener('DOMContentLoaded', function() {
-    carregarUsuarioLogado();
+document.addEventListener('DOMContentLoaded', async function() {
+    await carregarUsuarioLogado();
     carregarUsuarios();
     
     // Form submit
@@ -54,7 +54,7 @@ async function carregarUsuarios() {
                     <button class="btn btn-small btn-secondary" onclick="editarUsuario(${usuario.id}, '${usuario.nome}', '${usuario.email}', '${usuario.role}', ${usuario.ativo})">
                         ✏️ Editar
                     </button>
-                    ${usuario.id !== usuarioAtual.id ? `
+                    ${usuarioAtual && usuario.id !== usuarioAtual.id ? `
                         <button class="btn btn-small btn-danger" onclick="confirmarDesativar(${usuario.id}, '${usuario.nome}')">
                             🗑️
                         </button>

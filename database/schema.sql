@@ -205,4 +205,4 @@ INSERT OR IGNORE INTO subcategorias (categoria_id, nome, urgencia_padrao) VALUES
 
 -- Inserir usuário admin padrão (senha: admin123)
 INSERT OR IGNORE INTO usuarios (id, nome, email, senha, role) VALUES
-(1, 'Administrador', 'admin@empresa.com', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin');
+(1, 'Administrador', 'admin@empresa.com', '$2a$10$3oXyAZCLH8q8qW6RMrbUouYbHdtZ5x5wNCcfXjPy4Iy2emiXjXwHm', 'admin');
