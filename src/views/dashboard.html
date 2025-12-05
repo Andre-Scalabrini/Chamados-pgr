@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sistema de Chamados T.I</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">🖥️</div>
+                <h2>Chamados T.I</h2>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="/admin/dashboard" class="nav-item active">
+                    <span class="icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/admin/chamados" class="nav-item">
+                    <span class="icon">📋</span>
+                    <span>Chamados</span>
+                </a>
+                <a href="/admin/usuarios" class="nav-item" id="menuUsuarios">
+                    <span class="icon">👥</span>
+                    <span>Usuários</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <span class="user-name" id="userName">Carregando...</span>
+                    <span class="user-role" id="userRole"></span>
+                </div>
+                <a href="/admin/logout" class="logout-btn">
+                    <span class="icon">🚪</span>
+                    <span>Sair</span>
+                </a>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="page-header">
+                <h1>Dashboard</h1>
+                <div class="header-actions">
+                    <span class="whatsapp-status" id="whatsappStatus">
+                        <span class="status-indicator"></span>
+                        <span class="status-text">Verificando WhatsApp...</span>
+                    </span>
+                </div>
+            </header>
+            
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue">📋</div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="totalChamados">0</span>
+                        <span class="stat-label">Total de Chamados</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon green">🔵</div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="chamadosAbertos">0</span>
+                        <span class="stat-label">Chamados Abertos</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon yellow">🟡</div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="chamadosAndamento">0</span>
+                        <span class="stat-label">Em Andamento</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon red">🔴</div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="chamadosCriticos">0</span>
+                        <span class="stat-label">Urgência Crítica</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Charts Row -->
+            <div class="charts-row">
+                <div class="chart-container">
+                    <h3>Chamados por Dia (Últimos 30 dias)</h3>
+                    <canvas id="chartPorDia"></canvas>
+                </div>
+                
+                <div class="chart-container">
+                    <h3>Chamados por Categoria</h3>
+                    <canvas id="chartPorCategoria"></canvas>
+                </div>
+            </div>
+            
+            <!-- Second Row -->
+            <div class="charts-row">
+                <div class="chart-container small">
+                    <h3>Status dos Chamados</h3>
+                    <canvas id="chartPorStatus"></canvas>
+                </div>
+                
+                <div class="chart-container small">
+                    <h3>Urgência dos Chamados</h3>
+                    <canvas id="chartPorUrgencia"></canvas>
+                </div>
+                
+                <div class="info-card">
+                    <h3>Métricas</h3>
+                    <div class="metric-item">
+                        <span class="metric-label">Abertos Hoje</span>
+                        <span class="metric-value" id="abertosHoje">0</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Tempo Médio de Resolução</span>
+                        <span class="metric-value" id="tempoMedio">0h</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Técnicos Performance -->
+            <div class="table-container">
+                <h3>Desempenho por Técnico</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Técnico</th>
+                            <th>Atribuídos</th>
+                            <th>Resolvidos</th>
+                            <th>Taxa de Resolução</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaTecnicos">
+                        <tr>
+                            <td colspan="4" class="text-center">Carregando...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>

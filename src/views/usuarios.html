@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuários - Sistema de Chamados T.I</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">🖥️</div>
+                <h2>Chamados T.I</h2>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="/admin/dashboard" class="nav-item">
+                    <span class="icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/admin/chamados" class="nav-item">
+                    <span class="icon">📋</span>
+                    <span>Chamados</span>
+                </a>
+                <a href="/admin/usuarios" class="nav-item active" id="menuUsuarios">
+                    <span class="icon">👥</span>
+                    <span>Usuários</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <span class="user-name" id="userName">Carregando...</span>
+                    <span class="user-role" id="userRole"></span>
+                </div>
+                <a href="/admin/logout" class="logout-btn">
+                    <span class="icon">🚪</span>
+                    <span>Sair</span>
+                </a>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="page-header">
+                <h1>Gerenciamento de Usuários</h1>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="abrirModalNovoUsuario()">
+                        ➕ Novo Usuário
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Tabela de Usuários -->
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>E-mail</th>
+                            <th>Função</th>
+                            <th>Status</th>
+                            <th>Criado em</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaUsuarios">
+                        <tr>
+                            <td colspan="7" class="text-center">Carregando...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Modal de Usuário -->
+    <div class="modal" id="modalUsuario">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitulo">Novo Usuário</h2>
+                <button class="modal-close" onclick="fecharModal()">&times;</button>
+            </div>
+            
+            <form id="formUsuario" onsubmit="salvarUsuario(event)">
+                <div class="modal-body">
+                    <input type="hidden" id="usuarioId">
+                    
+                    <div class="form-group">
+                        <label for="nome">Nome *</label>
+                        <input type="text" id="nome" name="nome" required minlength="3">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">E-mail *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="senha">Senha <span id="senhaObrigatoria">*</span></label>
+                        <input type="password" id="senha" name="senha" minlength="6">
+                        <small id="senhaHint" style="display: none;">Deixe em branco para manter a senha atual</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="role">Função *</label>
+                        <select id="role" name="role" required>
+                            <option value="tecnico">Técnico</option>
+                            <option value="admin">Administrador</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="statusGroup" style="display: none;">
+                        <label for="ativo">Status</label>
+                        <select id="ativo" name="ativo">
+                            <option value="1">Ativo</option>
+                            <option value="0">Inativo</option>
+                        </select>
+                    </div>
+                    
+                    <div id="errorMessage" class="error-message" style="display: none;"></div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="fecharModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal de Confirmação -->
+    <div class="modal" id="modalConfirmacao">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>Confirmar Exclusão</h2>
+                <button class="modal-close" onclick="fecharModalConfirmacao()">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <p>Tem certeza que deseja desativar o usuário <strong id="nomeExcluir"></strong>?</p>
+                <input type="hidden" id="idExcluir">
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="fecharModalConfirmacao()">Cancelar</button>
+                <button class="btn btn-danger" onclick="confirmarExclusao()">Desativar</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/js/usuarios.js"></script>
+</body>
+</html>

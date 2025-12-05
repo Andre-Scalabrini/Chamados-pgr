@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Sistema de Chamados T.I</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <div class="logo">🖥️</div>
+                <h1>Sistema de Chamados T.I</h1>
+                <p>Painel Administrativo</p>
+            </div>
+            
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" required placeholder="seu@email.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" name="senha" required placeholder="••••••••">
+                </div>
+                
+                <div id="errorMessage" class="error-message" style="display: none;"></div>
+                
+                <button type="submit" class="btn btn-primary btn-block">
+                    <span class="btn-text">Entrar</span>
+                    <span class="btn-loading" style="display: none;">Entrando...</span>
+                </button>
+            </form>
+            
+            <div class="login-footer">
+                <p><em>Entre em contato com o administrador para obter suas credenciais.</em></p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const senha = document.getElementById('senha').value;
+            const errorDiv = document.getElementById('errorMessage');
+            const btnText = document.querySelector('.btn-text');
+            const btnLoading = document.querySelector('.btn-loading');
+            const submitBtn = document.querySelector('button[type="submit"]');
+            
+            // Mostrar loading
+            btnText.style.display = 'none';
+            btnLoading.style.display = 'inline';
+            submitBtn.disabled = true;
+            errorDiv.style.display = 'none';
+            
+            try {
+                const response = await fetch('/admin/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, senha })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Salvar token no localStorage
+                    if (data.token) {
+                        localStorage.setItem('token', data.token);
+                    }
+                    // Redirecionar para dashboard
+                    window.location.href = '/admin/dashboard';
+                } else {
+                    errorDiv.textContent = data.message || 'Erro ao fazer login';
+                    errorDiv.style.display = 'block';
+                }
+            } catch (error) {
+                errorDiv.textContent = 'Erro de conexão. Tente novamente.';
+                errorDiv.style.display = 'block';
+            } finally {
+                btnText.style.display = 'inline';
+                btnLoading.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
