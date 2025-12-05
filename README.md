@@ -49,8 +49,13 @@ npm install
 3. Configure as variáveis de ambiente:
 ```bash
 cp .env.example .env
-# Edite o arquivo .env conforme necessário
+# Edite o arquivo .env com suas configurações
 ```
+
+**⚠️ IMPORTANTE para Produção:**
+- Defina `JWT_SECRET` com uma chave segura e única
+- Defina `SESSION_SECRET` com uma chave segura e única
+- Altere as credenciais do administrador padrão após o primeiro login
 
 4. Inicie o servidor:
 ```bash
@@ -59,9 +64,11 @@ npm start
 
 5. Acesse o painel em: http://localhost:3000/admin
 
-### Credenciais Padrão
+### Credenciais Padrão (Apenas Desenvolvimento)
 - **Email**: admin@admin.com
 - **Senha**: admin123
+
+> ⚠️ **Segurança**: Altere essas credenciais imediatamente após o primeiro login em ambiente de produção.
 
 ## 📱 Conectando o WhatsApp
 

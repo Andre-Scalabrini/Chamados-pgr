@@ -36,7 +36,8 @@ const obterSessao = async (telefone) => {
     if (sessao.dados_temporarios) {
         try {
             sessao.dados_temporarios = JSON.parse(sessao.dados_temporarios);
-        } catch {
+        } catch (error) {
+            console.error('Erro ao parsear dados temporários da sessão:', error.message);
             sessao.dados_temporarios = {};
         }
     } else {

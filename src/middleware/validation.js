@@ -111,8 +111,14 @@ const validarChamado = (req, res, next) => {
         erros.push('Urgência inválida');
     }
     
-    if (atribuido_a !== undefined && atribuido_a !== null && typeof atribuido_a !== 'number') {
-        erros.push('Técnico inválido');
+    // Parse atribuido_a to number if it's a numeric string
+    if (atribuido_a !== undefined && atribuido_a !== null && atribuido_a !== '') {
+        const tecnicoId = parseInt(atribuido_a, 10);
+        if (isNaN(tecnicoId)) {
+            erros.push('Técnico inválido');
+        } else {
+            req.body.atribuido_a = tecnicoId;
+        }
     }
     
     if (erros.length > 0) {
